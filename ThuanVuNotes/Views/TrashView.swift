@@ -9,7 +9,19 @@ import SwiftUI
 
 // MARK: TrashView
 struct TrashView: View {
+    // MARK: Properties
+    @ObservedObject var viewModel = TrashViewModel()
+
     var body: some View {
-        Text("Trash")
+        List(viewModel.noteRowViewModels) { noteViewModel in
+            NoteRow(viewModel: noteViewModel)
+        }
+        .navigationTitle("Trash")
+    }
+}
+
+#Preview {
+    NavigationStack {
+        TrashView()
     }
 }

@@ -37,3 +37,9 @@ struct AddNote: View {
         }
     }
 }
+
+#Preview {
+    NavigationStack {
+        AddNote()
+    }
+}
