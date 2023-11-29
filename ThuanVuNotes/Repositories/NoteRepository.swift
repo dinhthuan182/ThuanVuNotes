@@ -16,8 +16,16 @@ class NoteRepository: ObservableObject {
     }
     @Published var notes = [Note]()
 
-    func fetchNote() {
+    // MARK: Initialization
+    init() {
+        fetchNote()
+    }
 
+    // MARK: Functions
+    func fetchNote() {
+        reference
+            .observe(.value) { [weak self] data in
+            }
     }
 
     func addNote(_ note: Note) {

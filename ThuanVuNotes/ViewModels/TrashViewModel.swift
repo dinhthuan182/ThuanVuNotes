@@ -14,8 +14,6 @@ class TrashViewModel: ObservableObject {
 
     // MARK: Initialization
     init() {
-        noteRowViewModels = testDataNotes.map { note in
-            NoteRowViewModel(note: note)
-        }
+        noteRowViewModels = []
     }
 }

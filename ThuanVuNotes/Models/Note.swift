@@ -27,23 +27,3 @@ extension Note: Hashable {
         lhs.ownerId == rhs.ownerId
     }
 }
-
-#if DEBUG
-let testDataNotes = [
-    Note(title: "Aaaaaaa", content: "AaaaaaaaaaaAaaaaaaaaaaAaaaaaaaaaa", ownerId: ""),
-    Note(title: "Bbbbbbb", content: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", ownerId: ""),
-    Note(title: "Ccccccc", content: "cccccccccccccccccccccccccccccccc", ownerId: ""),
-    Note(title: "Ddddddd", content: "dddddddddddddddddddddddddddddddddddd", ownerId: ""),
-    Note(title: "Eeeeeee", content: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", ownerId: "eee"),
-    Note(title: "Aaaaaaa", content: "AaaaaaaaaaaAaaaaaaaaaaAaaaaaaaaaa", ownerId: "aaaa"),
-    Note(title: "Bbbbbbb", content: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", ownerId: ""),
-    Note(title: "Ccccccc", content: "cccccccccccccccccccccccccccccccc", ownerId: "aaaa"),
-    Note(title: "Ddddddd", content: "dddddddddddddddddddddddddddddddddddd", ownerId: ""),
-    Note(title: "Eeeeeee", content: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", ownerId: "eee"),
-    Note(title: "Aaaaaaa", content: "AaaaaaaaaaaAaaaaaaaaaaAaaaaaaaaaa", ownerId: "aaaa"),
-    Note(title: "Bbbbbbb", content: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", ownerId: ""),
-    Note(title: "Ccccccc", content: "cccccccccccccccccccccccccccccccc", ownerId: "aaaa"),
-    Note(title: "Ddddddd", content: "dddddddddddddddddddddddddddddddddddd", ownerId: ""),
-    Note(title: "Eeeeeee", content: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", ownerId: "eee"),
-]
-#endif

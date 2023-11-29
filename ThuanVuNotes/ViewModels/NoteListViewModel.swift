@@ -37,15 +37,11 @@ class NoteListViewModel: ObservableObject {
     @Published var username: String = ""
     @Published var choices = NoteType.allCases
     @Published var choice: NoteType = .mySelf
-    @Published var notes: [Note] = testDataNotes
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
     init() {
-        noteRowViewModels = testDataNotes.map { note in
-            NoteRowViewModel(note: note)
-        }
-
+        // Fetch current username
         userRepository.$currentUser
             .map { $0?.username }
             .assign(to: \.userViewModel.username, on: self)
@@ -53,6 +49,16 @@ class NoteListViewModel: ObservableObject {
         userRepository.$currentUser
             .map { $0?.username ?? "" }
             .assign(to: \.username, on: self)
+            .store(in: &cancellables)
+
+        // Fetch notes
+        noteRepository.$notes
+            .flatMap { $0.publisher }
+            .map { note in
+                NoteRowViewModel(note: note)
+            }
+            .collect()
+            .assign(to: \.noteRowViewModels, on: self)
             .store(in: &cancellables)
     }
 
