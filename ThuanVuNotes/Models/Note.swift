@@ -8,11 +8,14 @@
 import Foundation
 
 // MARK: Note
-struct Note: Identifiable {
+struct Note: Codable, Identifiable {
     var id: String = UUID().uuidString
     var title: String
     var content: String
-    var owner: User
+    var ownerId: String
+    var createdAt: Date?
+    var updatedAt: Date?
+    var deletedAt: Date?
 }
 
 // MARK: Hashable
@@ -21,26 +24,26 @@ extension Note: Hashable {
         lhs.id == rhs.id &&
         lhs.title == rhs.title &&
         lhs.content == rhs.content &&
-        lhs.owner == rhs.owner
+        lhs.ownerId == rhs.ownerId
     }
 }
 
 #if DEBUG
 let testDataNotes = [
-    Note(title: "Aaaaaaa", content: "AaaaaaaaaaaAaaaaaaaaaaAaaaaaaaaaa", owner: User(username: "aaaa")),
-    Note(title: "Bbbbbbb", content: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", owner: User()),
-    Note(title: "Ccccccc", content: "cccccccccccccccccccccccccccccccc", owner: User(username: "aaaa")),
-    Note(title: "Ddddddd", content: "dddddddddddddddddddddddddddddddddddd", owner: User()),
-    Note(title: "Eeeeeee", content: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", owner: User(username: "eee")),
-    Note(title: "Aaaaaaa", content: "AaaaaaaaaaaAaaaaaaaaaaAaaaaaaaaaa", owner: User(username: "aaaa")),
-    Note(title: "Bbbbbbb", content: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", owner: User()),
-    Note(title: "Ccccccc", content: "cccccccccccccccccccccccccccccccc", owner: User(username: "aaaa")),
-    Note(title: "Ddddddd", content: "dddddddddddddddddddddddddddddddddddd", owner: User()),
-    Note(title: "Eeeeeee", content: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", owner: User(username: "eee")),
-    Note(title: "Aaaaaaa", content: "AaaaaaaaaaaAaaaaaaaaaaAaaaaaaaaaa", owner: User(username: "aaaa")),
-    Note(title: "Bbbbbbb", content: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", owner: User()),
-    Note(title: "Ccccccc", content: "cccccccccccccccccccccccccccccccc", owner: User(username: "aaaa")),
-    Note(title: "Ddddddd", content: "dddddddddddddddddddddddddddddddddddd", owner: User()),
-    Note(title: "Eeeeeee", content: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", owner: User(username: "eee")),
+    Note(title: "Aaaaaaa", content: "AaaaaaaaaaaAaaaaaaaaaaAaaaaaaaaaa", ownerId: ""),
+    Note(title: "Bbbbbbb", content: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", ownerId: ""),
+    Note(title: "Ccccccc", content: "cccccccccccccccccccccccccccccccc", ownerId: ""),
+    Note(title: "Ddddddd", content: "dddddddddddddddddddddddddddddddddddd", ownerId: ""),
+    Note(title: "Eeeeeee", content: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", ownerId: "eee"),
+    Note(title: "Aaaaaaa", content: "AaaaaaaaaaaAaaaaaaaaaaAaaaaaaaaaa", ownerId: "aaaa"),
+    Note(title: "Bbbbbbb", content: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", ownerId: ""),
+    Note(title: "Ccccccc", content: "cccccccccccccccccccccccccccccccc", ownerId: "aaaa"),
+    Note(title: "Ddddddd", content: "dddddddddddddddddddddddddddddddddddd", ownerId: ""),
+    Note(title: "Eeeeeee", content: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", ownerId: "eee"),
+    Note(title: "Aaaaaaa", content: "AaaaaaaaaaaAaaaaaaaaaaAaaaaaaaaaa", ownerId: "aaaa"),
+    Note(title: "Bbbbbbb", content: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", ownerId: ""),
+    Note(title: "Ccccccc", content: "cccccccccccccccccccccccccccccccc", ownerId: "aaaa"),
+    Note(title: "Ddddddd", content: "dddddddddddddddddddddddddddddddddddd", ownerId: ""),
+    Note(title: "Eeeeeee", content: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", ownerId: "eee"),
 ]
 #endif

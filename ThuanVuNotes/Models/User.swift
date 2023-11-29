@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: User
-struct User: Identifiable {
+struct User: Codable, Identifiable {
     var id: String = UUID().uuidString
     var username: String? = nil
 }

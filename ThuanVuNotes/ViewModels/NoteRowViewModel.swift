@@ -10,6 +10,9 @@ import Combine
 
 // MARK: NoteRowViewModel
 class NoteRowViewModel: ObservableObject, Identifiable {
+    // MARK: Repositories
+//    @Published var userRepository = UserRepository()
+
     // MARK: Properties
     @Published var note: Note
     @Published var title = ""
@@ -26,10 +29,10 @@ class NoteRowViewModel: ObservableObject, Identifiable {
             .assign(to: \.title, on: self)
             .store(in: &cancellables)
 
-        $note
-            .map { $0.owner.username }
-            .assign(to: \.userName, on: self)
-            .store(in: &cancellables)
+//        $note
+//            .map { $0.owner.username }
+//            .assign(to: \.userName, on: self)
+//            .store(in: &cancellables)
 
         $note
             .map { $0.id }

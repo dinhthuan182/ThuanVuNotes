@@ -10,6 +10,10 @@ import Combine
 
 // MARK: NoteListViewModel
 class NoteListViewModel: ObservableObject {
+    // MARK: Repositories
+    @Published var userRepository = UserRepository()
+    @Published var noteRepository = NoteRepository()
+    
     // MARK: NoteType
     enum NoteType: CaseIterable {
         case mySelf
