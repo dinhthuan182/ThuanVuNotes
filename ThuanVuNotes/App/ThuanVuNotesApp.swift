@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct ThuanVuNotesApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     var body: some Scene {
         WindowGroup {
             NavigationStack {
