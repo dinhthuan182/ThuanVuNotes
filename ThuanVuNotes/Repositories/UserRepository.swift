@@ -37,16 +37,23 @@ class UserRepository: ObservableObject {
             }
     }
 
-    func getUser(_ userId: String) { //-> AnyPublisher<User, Error> {
-        reference.child(userId).getData { error, data in
-            guard let data = data else {
-                return
-            }
+    func getUser(_ userId: String) -> AnyPublisher<User, Error> {
+        return Future<User, Error> { [weak self] promise in
+            guard let self = self else { return }
 
-            let value = data.value as? NSDictionary
-            print(">>> getUser:", value)
-
+            reference.child(userId)
+                .getData { error, data in
+                    if let data = data {
+                        let value = data.value as? NSDictionary
+                        let username = value?["username"] as? String
+                        let user = User(id: userId, username: username)
+                        promise(.success(user))
+                    } else if let error = error {
+                        promise(.failure(error))
+                    }
+                }
         }
+        .eraseToAnyPublisher()
     }
 
     func updateUsername(_ username: String?) {
