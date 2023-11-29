@@ -16,7 +16,7 @@ struct NoteRow: View {
         VStack {
             Text(viewModel.title)
 
-            if let username = viewModel.userName {
+            if let username = viewModel.username {
                 Text("By: " + username)
                     .foregroundStyle(.gray)
                     .font(.footnote)

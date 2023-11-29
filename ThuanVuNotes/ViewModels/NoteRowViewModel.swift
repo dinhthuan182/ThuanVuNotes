@@ -16,7 +16,7 @@ class NoteRowViewModel: ObservableObject, Identifiable {
     // MARK: Properties
     @Published var note: Note
     @Published var title = ""
-    @Published var userName: String?
+    @Published var username: String?
     var id = ""
     private var cancellables = Set<AnyCancellable>()
 
@@ -31,7 +31,7 @@ class NoteRowViewModel: ObservableObject, Identifiable {
 
 //        $note
 //            .map { $0.owner.username }
-//            .assign(to: \.userName, on: self)
+//            .assign(to: \.username, on: self)
 //            .store(in: &cancellables)
 
         $note

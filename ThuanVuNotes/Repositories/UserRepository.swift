@@ -29,10 +29,12 @@ class UserRepository: ObservableObject {
             return
         }
 
-        reference.child(userId).observeSingleEvent(of: .value) { data in
-            let value = data.value as? NSDictionary
-            print(">>> currentUser:", value)
-        }
+        reference.child(userId)
+            .observe(.value) { [weak self] data in
+                let value = data.value as? NSDictionary
+                let username = value?["username"] as? String
+                self?.currentUser = User(id: userId, username: username)
+            }
     }
 
     func getUser(_ userId: String) { //-> AnyPublisher<User, Error> {

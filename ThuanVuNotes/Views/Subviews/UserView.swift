@@ -19,7 +19,8 @@ struct UserView: View {
                 .resizable()
                 .frame(width: 40, height: 40)
 
-            if let username = viewModel.userName {
+            if let username = viewModel.username,
+               !username.isEmpty {
                 Text(username)
             }
         }

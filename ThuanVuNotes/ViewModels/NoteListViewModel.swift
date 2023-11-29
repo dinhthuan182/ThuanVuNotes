@@ -13,7 +13,7 @@ class NoteListViewModel: ObservableObject {
     // MARK: Repositories
     @Published var userRepository = UserRepository()
     @Published var noteRepository = NoteRepository()
-    
+
     // MARK: NoteType
     enum NoteType: CaseIterable {
         case mySelf
@@ -31,9 +31,10 @@ class NoteListViewModel: ObservableObject {
 
     // MARK: Properties
     // Subview view models
-    @Published var userViewModel: UserViewModel
+    @Published var userViewModel = UserViewModel()
     @Published var noteRowViewModels = [NoteRowViewModel]()
     // Properties
+    @Published var username: String = ""
     @Published var choices = NoteType.allCases
     @Published var choice: NoteType = .mySelf
     @Published var notes: [Note] = testDataNotes
@@ -41,9 +42,25 @@ class NoteListViewModel: ObservableObject {
 
     // MARK: Initialization
     init() {
-        userViewModel = UserViewModel(user: User())
         noteRowViewModels = testDataNotes.map { note in
             NoteRowViewModel(note: note)
         }
+
+        userRepository.$currentUser
+            .map { $0?.username }
+            .assign(to: \.userViewModel.username, on: self)
+            .store(in: &cancellables)
+        userRepository.$currentUser
+            .map { $0?.username ?? "" }
+            .assign(to: \.username, on: self)
+            .store(in: &cancellables)
+    }
+
+    func changeUserName() {
+        userRepository.updateUsername(username)
+    }
+
+    func revertUsername() {
+        username = userRepository.currentUser?.username ?? ""
     }
 }

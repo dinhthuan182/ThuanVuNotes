@@ -17,7 +17,8 @@ struct NoteListView: View {
     
     // MARK: Properties
     @ObservedObject var viewModel = NoteListViewModel()
-    @State var displaySubView: SubView? = nil
+    @State private var changeUsername = false
+    @State private var displaySubView: SubView? = nil
 
     var body: some View {
         List(viewModel.noteRowViewModels) { noteViewModel in
@@ -64,12 +65,27 @@ struct NoteListView: View {
         .navigationTitle("Notes")
         .toolbar {
             Button {
-
+                changeUsername.toggle()
             } label: {
                 UserView(viewModel: viewModel.userViewModel,
                          reverceLayout: true)
             }
         }
+        .alert("Tell me your name", isPresented: $changeUsername) {
+            TextField("Enter your name here", text: $viewModel.username)
+                .onSubmit(changeUserName)
+
+            Button("Change", action: changeUserName)
+
+            Button("Cancel", role: .cancel) {
+                viewModel.revertUsername()
+            }
+        }
+    }
+
+    private func changeUserName() {
+        viewModel.changeUserName()
+        changeUsername.toggle()
     }
 }
 
