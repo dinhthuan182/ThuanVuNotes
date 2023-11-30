@@ -24,9 +24,9 @@ struct AddNoteView: View {
             Button {
                 viewModel.addNote()
             } label: {
-                Image(systemName: "plus.circle")
+                Image(systemName: viewModel.isEditMode ? "checkmark.circle" : "plus.circle")
                     .resizable()
-                    .frame(width: 50, height: 50)
+                    .frame(width: 45, height: 45)
                     .padding([.bottom, .trailing], 10)
             }
             .disabled(viewModel.content.isEmpty)

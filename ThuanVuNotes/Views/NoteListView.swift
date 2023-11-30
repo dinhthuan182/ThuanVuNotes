@@ -59,12 +59,13 @@ struct NoteListView: View {
                 Button {
                     displaySubView = .addNote
                 } label: {
-                    Image(systemName: "pencil.circle")
+                    Image(systemName: "square.and.pencil.circle")
                         .resizable()
-                        .frame(width: 50, height: 50)
+                        .frame(width: 45, height: 45)
                         .padding(.trailing, 10)
                 }
             }
+            .padding(.bottom)
         }
         .navigationTitle("Notes")
         .toolbar {
@@ -96,7 +97,7 @@ struct NoteListView: View {
                     TrashView()
             }
         }
-        .alert("Tell me your name", isPresented: $changeUsername) {
+        .alert("Tell other people your name", isPresented: $changeUsername) {
             TextField("Enter your name here", text: $viewModel.username)
                 .onSubmit(changeUserName)
 

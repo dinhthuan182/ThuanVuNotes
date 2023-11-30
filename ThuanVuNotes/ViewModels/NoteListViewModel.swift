@@ -43,7 +43,7 @@ class NoteListViewModel: ObservableObject {
 
     // MARK: Initialization
     init() {
-        // Fetch current username
+        // Fetch current user information
         userRepository.$currentUser
             .map { $0?.username }
             .assign(to: \.userViewModel.username, on: self)
@@ -80,7 +80,6 @@ class NoteListViewModel: ObservableObject {
 
             } receiveValue: { _ in }
             .store(in: &cancellables)
-
     }
 
     func revertUsername() {
