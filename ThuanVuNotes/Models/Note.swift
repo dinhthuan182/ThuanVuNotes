@@ -17,13 +17,3 @@ struct Note: Codable, Identifiable {
     var updatedAt: Date?
     var deletedAt: Date?
 }
-
-// MARK: Hashable
-extension Note: Hashable {
-    static func == (lhs: Note, rhs: Note) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.title == rhs.title &&
-        lhs.content == rhs.content &&
-        lhs.ownerId == rhs.ownerId
-    }
-}

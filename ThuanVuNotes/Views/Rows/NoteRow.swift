@@ -13,7 +13,7 @@ struct NoteRow: View {
     @ObservedObject var viewModel: NoteRowViewModel
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             Text(viewModel.title)
 
             if let username = viewModel.username {

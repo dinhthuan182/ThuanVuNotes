@@ -23,6 +23,7 @@ struct NoteListView: View {
     var body: some View {
         List(viewModel.noteRowViewModels) { noteViewModel in
             NoteRow(viewModel: noteViewModel)
+
         }
         .listStyle(.inset)
         .safeAreaInset(edge: .bottom) {

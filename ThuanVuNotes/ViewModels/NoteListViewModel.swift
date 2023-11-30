@@ -59,15 +59,15 @@ class NoteListViewModel: ObservableObject {
         // Fetch notes with owner option
         Publishers.CombineLatest3(noteRepository.$allNoteList, $SelectedOwnerOption, $currentUserId)
             .map { (notes, ownerOption, currentUserId) in
-                var mapingNotes = [Note]()
                 switch ownerOption {
                     case .mySelf:
-                        mapingNotes = notes.filter { $0.ownerId == currentUserId }
-                    case .otherUsers:
-                        mapingNotes = notes.filter { $0.ownerId != currentUserId }
-                }
+                        let mapingNotes = notes.filter { $0.ownerId == currentUserId }
+                        return mapingNotes.map { NoteRowViewModel(note: $0, isMySelf: true) }
 
-                return mapingNotes.map { NoteRowViewModel(note: $0) }
+                    case .otherUsers:
+                        let mapingNotes = notes.filter { $0.ownerId != currentUserId }
+                        return mapingNotes.map { NoteRowViewModel(note: $0, isMySelf: false) }
+                }
             }
             .assign(to: \.noteRowViewModels, on: self)
             .store(in: &cancellables)

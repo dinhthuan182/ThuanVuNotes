@@ -11,7 +11,7 @@ import Combine
 // MARK: NoteRowViewModel
 class NoteRowViewModel: ObservableObject, Identifiable {
     // MARK: Repositories
-//    @Published var userRepository = UserRepository()
+    @Published var userRepository = UserRepository()
 
     // MARK: Properties
     @Published var note: Note
@@ -21,22 +21,27 @@ class NoteRowViewModel: ObservableObject, Identifiable {
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
-    init(note: Note) {
+    init(note: Note, isMySelf: Bool) {
         self.note = note
+
+        $note
+            .map { $0.id }
+            .assign(to: \.id, on: self)
+            .store(in: &cancellables)
 
         $note
             .map { $0.title }
             .assign(to: \.title, on: self)
             .store(in: &cancellables)
 
-//        $note
-//            .map { $0.owner.username }
-//            .assign(to: \.username, on: self)
-//            .store(in: &cancellables)
-
-        $note
-            .map { $0.id }
-            .assign(to: \.id, on: self)
-            .store(in: &cancellables)
+        if !isMySelf {
+            $note
+                .flatMap { self.userRepository.getUser($0.ownerId) }
+                .sink(receiveCompletion: { _ in
+                }, receiveValue: { [weak self] user in
+                    self?.username = user.username
+                })
+                .store(in: &cancellables)
+        }
     }
 }
