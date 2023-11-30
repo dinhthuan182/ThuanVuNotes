@@ -31,7 +31,7 @@ struct AddNoteView: View {
             }
             .disabled(viewModel.content.isEmpty)
         }
-        .navigationTitle("New note")
+        .navigationTitle(viewModel.isEditMode ? "Update note" : "New note")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             editingNote.toggle()

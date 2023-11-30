@@ -33,6 +33,7 @@ class NoteListViewModel: ObservableObject {
     // Subview view models
     @Published var userViewModel = UserViewModel()
     @Published var noteRowViewModels = [NoteRowViewModel]()
+    @Published var selectedNoteRowViewModel: NoteRowViewModel?
     // Properties
     @Published var currentUserId: String = ""
     @Published var username: String = ""

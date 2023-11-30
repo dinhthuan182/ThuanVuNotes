@@ -15,10 +15,24 @@ class AddNoteViewModel: ObservableObject {
     @Published var noteRepository = NoteRepository()
 
     // MARK: Properties
+    @Published var note: Note? /// `note` variable for edit mode
     @Published var content = ""
     @Published var destroyView = false
     @Published var error: Error?
+    var isEditMode: Bool {
+        note != nil
+    }
     private var cancellables = Set<AnyCancellable>()
+
+    // MARK: Initialization
+    init(_ note: Note? = nil) {
+        self.note = note
+
+        $note
+            .compactMap { $0?.content }
+            .assign(to: \.content, on: self)
+            .store(in: &cancellables)
+    }
 
     // MARK: Functions
     func addNote() {
@@ -28,19 +42,37 @@ class AddNoteViewModel: ObservableObject {
 
         // Get the first line of content to make the note's title
         let title = content.getFirstLine() ?? content
-        let note = Note(title: title,
-                        content: content,
-                        ownerId: userID)
+        if var updateNote = self.note {
+            // Update note
+            updateNote.title = title
+            updateNote.content = content
 
-        noteRepository.addNote(note)
-            .sink { [weak self] completion in
-                switch completion {
-                    case .finished:
-                        self?.destroyView.toggle()
-                    case .failure(let error):
-                        self?.error = error
-                }
-            } receiveValue: { _ in }
-            .store(in: &cancellables)
+            noteRepository.updateNote(updateNote)
+                .sink { [weak self] completion in
+                    switch completion {
+                        case .finished:
+                            self?.destroyView.toggle()
+                        case .failure(let error):
+                            self?.error = error
+                    }
+                } receiveValue: { _ in }
+                .store(in: &cancellables)
+        } else {
+            // Add new note
+            let newNote = Note(title: title,
+                            content: content,
+                            ownerId: userID)
+
+            noteRepository.addNote(newNote)
+                .sink { [weak self] completion in
+                    switch completion {
+                        case .finished:
+                            self?.destroyView.toggle()
+                        case .failure(let error):
+                            self?.error = error
+                    }
+                } receiveValue: { _ in }
+                .store(in: &cancellables)
+        }
     }
 }

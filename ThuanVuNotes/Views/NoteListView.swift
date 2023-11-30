@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 // MARK: NoteListView
 struct NoteListView: View {
@@ -22,13 +23,18 @@ struct NoteListView: View {
 
     var body: some View {
         List(viewModel.noteRowViewModels) { rowViewModel in
-            NoteRow(viewModel: rowViewModel)
-                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                    Button("Delete", role: .destructive) {
-                        viewModel.deleteRow(rowViewModel)
+            Button {
+                viewModel.selectedNoteRowViewModel = rowViewModel
+            } label: {
+                NoteRow(viewModel: rowViewModel)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button("Delete", role: .destructive) {
+                            viewModel.deleteRow(rowViewModel)
+                        }
                     }
-                }
-                .disabled(viewModel.selectedOwnerOption != .mySelf)
+                    .disabled(viewModel.selectedOwnerOption != .mySelf)
+            }
+            .buttonStyle(.plain)
         }
         .listStyle(.inset)
         .safeAreaInset(edge: .bottom) {
@@ -60,6 +66,18 @@ struct NoteListView: View {
                 }
             }
         }
+        // Navigation link for select item in list
+        .navigationDestination(item: $viewModel.selectedNoteRowViewModel) { rowViewModel in
+            switch viewModel.selectedOwnerOption {
+                case .mySelf:
+                    // Update note
+                    AddNoteView(viewModel: AddNoteViewModel(rowViewModel.note))
+                case .otherUsers:
+                    // View note detail of other users
+                    EmptyView()
+            }
+        }
+        // Navigation link for buttons
         .navigationDestination(item: $displaySubView) { subview in
             switch subview {
                 case .addNote:

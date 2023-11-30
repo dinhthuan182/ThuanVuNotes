@@ -45,3 +45,14 @@ class NoteRowViewModel: ObservableObject, Identifiable {
         }
     }
 }
+
+// MARK: Hashable
+extension NoteRowViewModel: Hashable {
+    func hash(into hasher: inout Hasher) {
+        return hasher.combine(id)
+    }
+
+    static func == (lhs: NoteRowViewModel, rhs: NoteRowViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+}
