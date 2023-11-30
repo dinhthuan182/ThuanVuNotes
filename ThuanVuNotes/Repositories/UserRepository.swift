@@ -24,16 +24,17 @@ class UserRepository: ObservableObject {
 
     // MARK: Functions
     func fetchCurrentUser() {
-        guard let userId = Auth.auth().currentUser?.uid else {
-            // Fatal error
-            return
-        }
+        guard let userId = Auth.auth().currentUser?.uid else { return }
 
         reference.child(userId)
-            .observe(.value) { [weak self] data in
-                let value = data.value as? NSDictionary
-                let username = value?["username"] as? String
-                self?.currentUser = User(id: userId, username: username)
+            .observe(.value) { [weak self] snapshot in
+                guard let value = snapshot.value else { return }
+
+                do {
+                    self?.currentUser = try JSONParser().decode(value)
+                } catch {
+                    self?.currentUser = User(id: userId)
+                }
             }
     }
 
@@ -42,12 +43,14 @@ class UserRepository: ObservableObject {
             guard let self = self else { return }
 
             reference.child(userId)
-                .getData { error, data in
-                    if let data = data {
-                        let value = data.value as? NSDictionary
-                        let username = value?["username"] as? String
-                        let user = User(id: userId, username: username)
-                        promise(.success(user))
+                .getData { error, snapshot in
+                    if let snapshot = snapshot {
+                        do {
+                            let user: User = try JSONParser().decode(snapshot.value as Any)
+                            promise(.success(user))
+                        } catch {
+                            promise(.failure(error))
+                        }
                     } else if let error = error {
                         promise(.failure(error))
                     }
@@ -56,13 +59,22 @@ class UserRepository: ObservableObject {
         .eraseToAnyPublisher()
     }
 
-    func updateUsername(_ username: String?) {
-        guard let userId = currentUser?.id else {
-            // Fatal error
-            return
-        }
+    func updateUsername(_ username: String?) -> AnyPublisher<Any, Error> {
+        return Just(currentUser)
+            .compactMap { currentUser -> (String, User)? in
+                guard let userId = currentUser?.id else {
+                    return nil
+                }
 
-        reference.child(userId).setValue(["username": username])
+                return (userId, User(id: userId, username: username))
+            }
+            .tryMap { userId, updatedUser in
+                (userId, try JSONParser().encode(updatedUser))
+            }
+            .compactMap { [weak self] id, dictionary in
+                self?.reference.child(id).setValue(dictionary)
+            }
+            .eraseToAnyPublisher()
     }
 }
 
