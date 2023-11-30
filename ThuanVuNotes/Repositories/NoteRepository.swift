@@ -22,6 +22,7 @@ class NoteRepository: ObservableObject {
 
     // MARK: Initialization
     init() {
+        /// Filter all users' avaliable notes (including mine) from `allNotes` to` availableNotes`
         $allNotes
             .map { notes in
                 notes.filter { $0.deletedAt == nil }
@@ -29,6 +30,7 @@ class NoteRepository: ObservableObject {
             .assign(to: \.availableNotes, on: self)
             .store(in: &cancellables)
 
+        /// Filter mine deleted notes from `allNotes` to `mineDeletedNotes`
         let userId = Auth.auth().currentUser?.uid
         $allNotes
             .map { notes in
@@ -44,7 +46,8 @@ class NoteRepository: ObservableObject {
     func fetchNote() {
         reference
             .observe(.value) { [weak self] snapshot in
-                guard let value = snapshot.value else {
+                guard let value = snapshot.value,
+                    !(value is NSNull) else {
                     return
                 }
 

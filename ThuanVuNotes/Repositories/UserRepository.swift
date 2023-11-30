@@ -28,7 +28,8 @@ class UserRepository: ObservableObject {
 
         reference.child(userId)
             .observe(.value) { [weak self] snapshot in
-                guard let value = snapshot.value, !(value is NSNull) else {
+                guard let value = snapshot.value,
+                        !(value is NSNull) else {
                     self?.currentUser = User(id: userId)
 
                     return
