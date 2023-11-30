@@ -31,8 +31,7 @@ class NoteRepository: ObservableObject {
                 }
 
                 do {
-                    let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
-                    let nodes = try JSONDecoder().decode([String:Note].self, from: data)
+                    let nodes: [String:Note] = try JSONParser().decode(value)
                     self?.notes = nodes.map { $0.value }
                 } catch { }
             }
@@ -40,8 +39,7 @@ class NoteRepository: ObservableObject {
 
     func addNote(_ note: Note) -> AnyPublisher<Any, Error> {
         Just(note)
-            .encode(encoder: JSONEncoder())
-            .tryMap { try JSONSerialization.jsonObject(with: $0) }
+            .tryMap { try JSONParser().encode($0) }
             .compactMap { [weak self] dictionary in
                 self?.reference.child(note.id).setValue(dictionary)
             }
