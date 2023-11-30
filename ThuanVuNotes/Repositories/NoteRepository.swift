@@ -15,7 +15,7 @@ class NoteRepository: ObservableObject {
     var reference: DatabaseReference {
         Database.database().reference().child("notes")
     }
-    @Published var notes = [Note]()
+    @Published var allNoteList = [Note]()
 
     // MARK: Initialization
     init() {
@@ -32,7 +32,7 @@ class NoteRepository: ObservableObject {
 
                 do {
                     let nodes: [String:Note] = try JSONParser().decode(value)
-                    self?.notes = nodes.map { $0.value }
+                    self?.allNoteList = nodes.map { $0.value }
                 } catch { }
             }
     }

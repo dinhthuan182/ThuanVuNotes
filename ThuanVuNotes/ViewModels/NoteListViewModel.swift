@@ -10,16 +10,16 @@ import Combine
 
 // MARK: NoteListViewModel
 class NoteListViewModel: ObservableObject {
-    // MARK: NoteType
-    enum NoteType: CaseIterable {
+    // MARK: NoteOwnerOption
+    enum NoteOwnerOption: CaseIterable {
         case mySelf
-        case OtherUsers
+        case otherUsers
 
         var title: String {
             switch self {
                 case .mySelf:
-                    "Your notes"
-                case .OtherUsers:
+                    "My self"
+                case .otherUsers:
                     "Other users"
             }
         }
@@ -34,9 +34,10 @@ class NoteListViewModel: ObservableObject {
     @Published var userViewModel = UserViewModel()
     @Published var noteRowViewModels = [NoteRowViewModel]()
     // Properties
+    @Published var currentUserId: String = ""
     @Published var username: String = ""
-    @Published var choices = NoteType.allCases
-    @Published var choice: NoteType = .mySelf
+    @Published var ownerOptions = NoteOwnerOption.allCases
+    @Published var SelectedOwnerOption: NoteOwnerOption = .mySelf
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
@@ -47,14 +48,26 @@ class NoteListViewModel: ObservableObject {
             .assign(to: \.userViewModel.username, on: self)
             .store(in: &cancellables)
         userRepository.$currentUser
-            .map { $0?.username ?? "" }
+            .compactMap { $0?.username }
             .assign(to: \.username, on: self)
             .store(in: &cancellables)
+        userRepository.$currentUser
+            .compactMap { $0?.id }
+            .assign(to: \.currentUserId, on: self)
+            .store(in: &cancellables)
 
-        // Fetch notes
-        noteRepository.$notes
-            .map { notes in
-                notes.map { NoteRowViewModel(note: $0) }
+        // Fetch notes with owner option
+        Publishers.CombineLatest3(noteRepository.$allNoteList, $SelectedOwnerOption, $currentUserId)
+            .map { (notes, ownerOption, currentUserId) in
+                var mapingNotes = [Note]()
+                switch ownerOption {
+                    case .mySelf:
+                        mapingNotes = notes.filter { $0.ownerId == currentUserId }
+                    case .otherUsers:
+                        mapingNotes = notes.filter { $0.ownerId != currentUserId }
+                }
+
+                return mapingNotes.map { NoteRowViewModel(note: $0) }
             }
             .assign(to: \.noteRowViewModels, on: self)
             .store(in: &cancellables)

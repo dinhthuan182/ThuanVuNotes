@@ -36,8 +36,8 @@ struct NoteListView: View {
                         .padding(.leading)
                 }
 
-                Picker("Type", selection: $viewModel.choice) {
-                    ForEach(viewModel.choices, id: \.self) { option in
+                Picker("Owner option", selection: $viewModel.SelectedOwnerOption) {
+                    ForEach(viewModel.ownerOptions, id: \.self) { option in
                         Text(option.title)
                             .tag(option)
                     }
