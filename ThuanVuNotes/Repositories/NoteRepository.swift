@@ -38,8 +38,14 @@ class NoteRepository: ObservableObject {
             }
     }
 
-    func addNote(_ note: Note) {
-
+    func addNote(_ note: Note) -> AnyPublisher<Any, Error> {
+        Just(note)
+            .encode(encoder: JSONEncoder())
+            .tryMap { try JSONSerialization.jsonObject(with: $0) }
+            .compactMap { [weak self] dictionary in
+                self?.reference.child(note.id).setValue(dictionary)
+            }
+            .eraseToAnyPublisher()
     }
 
     func updateNote(_ note: Note) {
@@ -51,6 +57,6 @@ class NoteRepository: ObservableObject {
     }
 
     func recoverNote(_ note: Note) {
-        
+
     }
 }

@@ -57,7 +57,7 @@ struct NoteListView: View {
         .navigationDestination(item: $displaySubView) { subview in
             switch subview {
                 case .addNote:
-                    AddNote()
+                    AddNoteView()
                 case .trash:
                     TrashView()
             }
