@@ -55,6 +55,8 @@
 		734B8E9A2B17A02B002E0A77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 734B8E992B17A02B002E0A77 /* GoogleService-Info.plist */; };
 		734B8EA02B17C177002E0A77 /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734B8E9F2B17C177002E0A77 /* JSONParser.swift */; };
 		734B8EA32B17D1EB002E0A77 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734B8EA22B17D1EB002E0A77 /* String+Extension.swift */; };
+		734B8EA52B18ADC3002E0A77 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734B8EA42B18ADC3002E0A77 /* NoteDetailView.swift */; };
+		734B8EA72B18ADF2002E0A77 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734B8EA62B18ADF2002E0A77 /* NoteDetailViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +82,8 @@
 		734B8E992B17A02B002E0A77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		734B8E9F2B17C177002E0A77 /* JSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
 		734B8EA22B17D1EB002E0A77 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		734B8EA42B18ADC3002E0A77 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
+		734B8EA62B18ADF2002E0A77 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +173,7 @@
 				734B8E072B176883002E0A77 /* NoteListView.swift */,
 				734B8E132B176A7C002E0A77 /* AddNoteView.swift */,
 				734B8E152B176AAA002E0A77 /* TrashView.swift */,
+				734B8EA42B18ADC3002E0A77 /* NoteDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 				734B8E1B2B177250002E0A77 /* UserViewModel.swift */,
 				734B8E1D2B1774F7002E0A77 /* AddNoteViewModel.swift */,
 				734B8E1F2B177C54002E0A77 /* TrashViewModel.swift */,
+				734B8EA62B18ADF2002E0A77 /* NoteDetailViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -365,12 +371,14 @@
 				734B8E202B177C54002E0A77 /* TrashViewModel.swift in Sources */,
 				734B8E0C2B1768F0002E0A77 /* User.swift in Sources */,
 				734B8E0A2B1768D7002E0A77 /* Note.swift in Sources */,
+				734B8EA52B18ADC3002E0A77 /* NoteDetailView.swift in Sources */,
 				734B8EA32B17D1EB002E0A77 /* String+Extension.swift in Sources */,
 				734B8EA02B17C177002E0A77 /* JSONParser.swift in Sources */,
 				734B8E1A2B176E5C002E0A77 /* NoteRowViewModel.swift in Sources */,
 				734B8E122B1769C9002E0A77 /* UserView.swift in Sources */,
 				734B8E162B176AAA002E0A77 /* TrashView.swift in Sources */,
 				734B8E182B176C2A002E0A77 /* NoteListViewModel.swift in Sources */,
+				734B8EA72B18ADF2002E0A77 /* NoteDetailViewModel.swift in Sources */,
 				734B8E982B179427002E0A77 /* UserRepository.swift in Sources */,
 				734B8E142B176A7C002E0A77 /* AddNoteView.swift in Sources */,
 			);

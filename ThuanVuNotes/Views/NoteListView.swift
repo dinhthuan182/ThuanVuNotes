@@ -66,6 +66,16 @@ struct NoteListView: View {
                 }
             }
         }
+        .navigationTitle("Notes")
+        .toolbar {
+            Button {
+                changeUsername.toggle()
+            } label: {
+                UserView(viewModel: viewModel.userViewModel,
+                         reverceLayout: true)
+                .frame(height: 30)
+            }
+        }
         // Navigation link for select item in list
         .navigationDestination(item: $viewModel.selectedNoteRowViewModel) { rowViewModel in
             switch viewModel.selectedOwnerOption {
@@ -74,7 +84,7 @@ struct NoteListView: View {
                     AddNoteView(viewModel: AddNoteViewModel(rowViewModel.note))
                 case .otherUsers:
                     // View note detail of other users
-                    EmptyView()
+                    NoteDetailView(viewModel: NoteDetailViewModel(rowViewModel.note))
             }
         }
         // Navigation link for buttons
@@ -84,15 +94,6 @@ struct NoteListView: View {
                     AddNoteView()
                 case .trash:
                     TrashView()
-            }
-        }
-        .navigationTitle("Notes")
-        .toolbar {
-            Button {
-                changeUsername.toggle()
-            } label: {
-                UserView(viewModel: viewModel.userViewModel,
-                         reverceLayout: true)
             }
         }
         .alert("Tell me your name", isPresented: $changeUsername) {

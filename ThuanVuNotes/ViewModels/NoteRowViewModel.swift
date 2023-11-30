@@ -39,7 +39,7 @@ class NoteRowViewModel: ObservableObject, Identifiable {
                 .flatMap { self.userRepository.getUser($0.ownerId) }
                 .sink(receiveCompletion: { _ in
                 }, receiveValue: { [weak self] user in
-                    self?.username = user.username
+                    self?.username = user?.username
                 })
                 .store(in: &cancellables)
         }

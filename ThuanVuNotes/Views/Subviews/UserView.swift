@@ -17,7 +17,7 @@ struct UserView: View {
         HStack {
             Image(systemName: "person.circle")
                 .resizable()
-                .frame(width: 40, height: 40)
+                .aspectRatio(contentMode: .fit)
 
             if let username = viewModel.username,
                !username.isEmpty {

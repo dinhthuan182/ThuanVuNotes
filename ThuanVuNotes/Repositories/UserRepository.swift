@@ -42,13 +42,17 @@ class UserRepository: ObservableObject {
             }
     }
 
-    func getUser(_ userId: String) -> AnyPublisher<User, Error> {
-        return Future<User, Error> { [weak self] promise in
-            guard let self = self else { return }
+    func getUser(_ userId: String) -> AnyPublisher<User?, Error> {
+        return Future<User?, Error> { [weak self] promise in
+            guard let self = self else {
+                promise(.success(nil))
+
+                return
+            }
 
             reference.child(userId)
                 .getData { error, snapshot in
-                    if let snapshot = snapshot {
+                    if let snapshot = snapshot, !(snapshot.value is NSNull) {
                         do {
                             let user: User = try JSONParser().decode(snapshot.value as Any)
                             promise(.success(user))
@@ -57,6 +61,8 @@ class UserRepository: ObservableObject {
                         }
                     } else if let error = error {
                         promise(.failure(error))
+                    } else {
+                        promise(.success(nil))
                     }
                 }
         }
