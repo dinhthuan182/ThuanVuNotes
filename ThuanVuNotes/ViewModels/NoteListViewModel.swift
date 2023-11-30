@@ -57,7 +57,7 @@ class NoteListViewModel: ObservableObject {
             .store(in: &cancellables)
 
         // Fetch notes with owner option
-        Publishers.CombineLatest3(noteRepository.$allNoteList, $selectedOwnerOption, $currentUserId)
+        Publishers.CombineLatest3(noteRepository.$availableNoteList, $selectedOwnerOption, $currentUserId)
             .map { (notes, ownerOption, currentUserId) in
                 switch ownerOption {
                     case .mySelf:

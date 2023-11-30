@@ -16,9 +16,27 @@ class NoteRepository: ObservableObject {
         Database.database().reference().child("notes")
     }
     @Published var allNoteList = [Note]()
+    @Published var availableNoteList = [Note]()
+    @Published var deletedNoteList = [Note]()
+    private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
     init() {
+        $allNoteList
+            .map { noteList in
+                noteList.filter { $0.deletedAt == nil }
+            }
+            .assign(to: \.availableNoteList, on: self)
+            .store(in: &cancellables)
+
+
+            $allNoteList
+                .map { noteList in
+                    noteList.filter { $0.deletedAt != nil }
+                }
+                .assign(to: \.deletedNoteList, on: self)
+                .store(in: &cancellables)
+
         fetchNote()
     }
 
