@@ -21,9 +21,14 @@ struct NoteListView: View {
     @State private var displaySubView: SubView? = nil
 
     var body: some View {
-        List(viewModel.noteRowViewModels) { noteViewModel in
-            NoteRow(viewModel: noteViewModel)
-
+        List(viewModel.noteRowViewModels) { rowViewModel in
+            NoteRow(viewModel: rowViewModel)
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button("Delete", role: .destructive) {
+                        viewModel.deleleRow(rowViewModel)
+                    }
+                }
+                .disabled(viewModel.selectedOwnerOption != .mySelf)
         }
         .listStyle(.inset)
         .safeAreaInset(edge: .bottom) {
@@ -37,7 +42,7 @@ struct NoteListView: View {
                         .padding(.leading)
                 }
 
-                Picker("Owner option", selection: $viewModel.SelectedOwnerOption) {
+                Picker("Owner option", selection: $viewModel.selectedOwnerOption) {
                     ForEach(viewModel.ownerOptions, id: \.self) { option in
                         Text(option.title)
                             .tag(option)

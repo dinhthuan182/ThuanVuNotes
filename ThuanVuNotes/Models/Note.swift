@@ -13,7 +13,7 @@ struct Note: Codable, Identifiable {
     var title: String
     var content: String
     var ownerId: String
-    var createdAt: Date?
-    var updatedAt: Date?
+    var createdAt: Date? = .now
+    var updatedAt: Date? = .now
     var deletedAt: Date?
 }

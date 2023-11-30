@@ -37,7 +37,7 @@ class NoteListViewModel: ObservableObject {
     @Published var currentUserId: String = ""
     @Published var username: String = ""
     @Published var ownerOptions = NoteOwnerOption.allCases
-    @Published var SelectedOwnerOption: NoteOwnerOption = .mySelf
+    @Published var selectedOwnerOption: NoteOwnerOption = .mySelf
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
@@ -57,7 +57,7 @@ class NoteListViewModel: ObservableObject {
             .store(in: &cancellables)
 
         // Fetch notes with owner option
-        Publishers.CombineLatest3(noteRepository.$allNoteList, $SelectedOwnerOption, $currentUserId)
+        Publishers.CombineLatest3(noteRepository.$allNoteList, $selectedOwnerOption, $currentUserId)
             .map { (notes, ownerOption, currentUserId) in
                 switch ownerOption {
                     case .mySelf:
@@ -84,5 +84,12 @@ class NoteListViewModel: ObservableObject {
 
     func revertUsername() {
         username = userRepository.currentUser?.username ?? ""
+    }
+
+    func deleleRow(_ rowViewModel: NoteRowViewModel) {
+        noteRepository.deleteNote(rowViewModel.note)
+            .sink { completion in
+            } receiveValue: { _ in }
+            .store(in: &cancellables)
     }
 }

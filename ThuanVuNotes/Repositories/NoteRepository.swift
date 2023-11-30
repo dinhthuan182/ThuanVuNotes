@@ -46,15 +46,39 @@ class NoteRepository: ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    func updateNote(_ note: Note) {
+    func updateNote(_ note: Note) -> AnyPublisher<Any, Error> {
+        var updateNote = note
+        updateNote.updatedAt = .now
 
+        return Just(updateNote)
+            .tryMap { try JSONParser().encode($0) }
+            .compactMap { [weak self] dictionary in
+                self?.reference.child(note.id).setValue(dictionary)
+            }
+            .eraseToAnyPublisher()
     }
 
-    func deleteNote(_ note: Note) {
+    func deleteNote(_ note: Note) -> AnyPublisher<Any, Error> {
+        var deleteNote = note
+        deleteNote.deletedAt = .now
 
+        return Just(deleteNote)
+            .tryMap { try JSONParser().encode($0) }
+            .compactMap { [weak self] dictionary in
+                self?.reference.child(note.id).setValue(dictionary)
+            }
+            .eraseToAnyPublisher()
     }
 
-    func recoverNote(_ note: Note) {
+    func recoverNote(_ note: Note) -> AnyPublisher<Any, Error> {
+        var recoverNote = note
+        recoverNote.deletedAt = nil
 
+        return Just(recoverNote)
+            .tryMap { try JSONParser().encode($0) }
+            .compactMap { [weak self] dictionary in
+                self?.reference.child(note.id).setValue(dictionary)
+            }
+            .eraseToAnyPublisher()
     }
 }
