@@ -77,7 +77,6 @@ class NoteListViewModel: ObservableObject {
     func changeUserName() {
         userRepository.updateUsername(username)
             .sink { completion in
-
             } receiveValue: { _ in }
             .store(in: &cancellables)
     }

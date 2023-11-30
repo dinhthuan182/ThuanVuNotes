@@ -13,16 +13,21 @@ struct NoteDetailView: View {
     @ObservedObject var viewModel: NoteDetailViewModel
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             UserView(viewModel: viewModel.userViewModel)
                 .frame(height: 50)
+                .padding(.leading)
 
             Divider()
 
-            TextEditor(text: $viewModel.content)
-                .foregroundStyle(.secondary)
-                .padding(.horizontal)
-                .disabled(true)
+            ScrollView {
+                Text(viewModel.content)
+                    .textSelection(.enabled)
+                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            Spacer()
         }
         .navigationTitle("Detail")
         .navigationBarTitleDisplayMode(.inline)

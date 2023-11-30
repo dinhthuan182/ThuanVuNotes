@@ -28,7 +28,6 @@ class NoteRowViewModel: ObservableObject, Identifiable {
             .map { $0.id }
             .assign(to: \.id, on: self)
             .store(in: &cancellables)
-
         $note
             .map { $0.title }
             .assign(to: \.title, on: self)
@@ -37,10 +36,10 @@ class NoteRowViewModel: ObservableObject, Identifiable {
         if !isMySelf {
             $note
                 .flatMap { self.userRepository.getUser($0.ownerId) }
-                .sink(receiveCompletion: { _ in
-                }, receiveValue: { [weak self] user in
+                .sink { completion in
+                } receiveValue: { [weak self] user in
                     self?.username = user?.username
-                })
+                }
                 .store(in: &cancellables)
         }
     }

@@ -17,7 +17,6 @@ struct AddNoteView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             TextEditor(text: $viewModel.content)
-                            .foregroundStyle(.secondary)
                             .padding(.horizontal)
                             .focused($editingNote)
 
