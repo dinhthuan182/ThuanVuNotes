@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import Combine
 
 // MARK: NoteRepository
 class NoteRepository: ObservableObject {
@@ -24,7 +25,16 @@ class NoteRepository: ObservableObject {
     // MARK: Functions
     func fetchNote() {
         reference
-            .observe(.value) { [weak self] data in
+            .observe(.value) { [weak self] snapshot in
+                guard let value = snapshot.value else {
+                    return
+                }
+
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
+                    let nodes = try JSONDecoder().decode([String:Note].self, from: data)
+                    self?.notes = nodes.map { $0.value }
+                } catch { }
             }
     }
 

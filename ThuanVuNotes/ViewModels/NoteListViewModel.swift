@@ -10,10 +10,6 @@ import Combine
 
 // MARK: NoteListViewModel
 class NoteListViewModel: ObservableObject {
-    // MARK: Repositories
-    @Published var userRepository = UserRepository()
-    @Published var noteRepository = NoteRepository()
-
     // MARK: NoteType
     enum NoteType: CaseIterable {
         case mySelf
@@ -28,6 +24,10 @@ class NoteListViewModel: ObservableObject {
             }
         }
     }
+
+    // MARK: Repositories
+    @Published var userRepository = UserRepository()
+    @Published var noteRepository = NoteRepository()
 
     // MARK: Properties
     // Subview view models
@@ -53,11 +53,9 @@ class NoteListViewModel: ObservableObject {
 
         // Fetch notes
         noteRepository.$notes
-            .flatMap { $0.publisher }
-            .map { note in
-                NoteRowViewModel(note: note)
+            .map { notes in
+                notes.map { NoteRowViewModel(note: $0) }
             }
-            .collect()
             .assign(to: \.noteRowViewModels, on: self)
             .store(in: &cancellables)
     }
