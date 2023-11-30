@@ -13,9 +13,16 @@ struct TrashView: View {
     @ObservedObject var viewModel = TrashViewModel()
 
     var body: some View {
-        List(viewModel.noteRowViewModels) { noteViewModel in
-            NoteRow(viewModel: noteViewModel)
+        List(viewModel.noteRowViewModels) { rowViewModel in
+            NoteRow(viewModel: rowViewModel)
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button("Recover", role: .destructive) {
+                        viewModel.recoverRow(rowViewModel)
+                    }
+                    .tint(.blue)
+                }
         }
+        .listStyle(.inset)
         .navigationTitle("Trash")
     }
 }

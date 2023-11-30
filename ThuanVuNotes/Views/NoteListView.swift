@@ -25,7 +25,7 @@ struct NoteListView: View {
             NoteRow(viewModel: rowViewModel)
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button("Delete", role: .destructive) {
-                        viewModel.deleleRow(rowViewModel)
+                        viewModel.deleteRow(rowViewModel)
                     }
                 }
                 .disabled(viewModel.selectedOwnerOption != .mySelf)

@@ -15,27 +15,27 @@ class NoteRepository: ObservableObject {
     var reference: DatabaseReference {
         Database.database().reference().child("notes")
     }
-    @Published var allNoteList = [Note]()
-    @Published var availableNoteList = [Note]()
-    @Published var deletedNoteList = [Note]()
+    @Published var allNotes = [Note]()
+    @Published var availableNotes = [Note]()
+    @Published var mineDeletedNotes = [Note]()
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
     init() {
-        $allNoteList
-            .map { noteList in
-                noteList.filter { $0.deletedAt == nil }
+        $allNotes
+            .map { notes in
+                notes.filter { $0.deletedAt == nil }
             }
-            .assign(to: \.availableNoteList, on: self)
+            .assign(to: \.availableNotes, on: self)
             .store(in: &cancellables)
 
-
-            $allNoteList
-                .map { noteList in
-                    noteList.filter { $0.deletedAt != nil }
-                }
-                .assign(to: \.deletedNoteList, on: self)
-                .store(in: &cancellables)
+        let userId = Auth.auth().currentUser?.uid
+        $allNotes
+            .map { notes in
+                notes.filter { $0.deletedAt != nil && $0.ownerId == userId }
+            }
+            .assign(to: \.mineDeletedNotes, on: self)
+            .store(in: &cancellables)
 
         fetchNote()
     }
@@ -50,7 +50,7 @@ class NoteRepository: ObservableObject {
 
                 do {
                     let nodes: [String:Note] = try JSONParser().decode(value)
-                    self?.allNoteList = nodes.map { $0.value }
+                    self?.allNotes = nodes.map { $0.value }
                 } catch { }
             }
     }
