@@ -36,8 +36,7 @@ struct NoteDetailView: View {
 
 #Preview {
     NavigationStack {
-        NoteDetailView(viewModel: NoteDetailViewModel(Note(title: "Test note",
-                                                           content: "Test note content",
+        NoteDetailView(viewModel: NoteDetailViewModel(Note(content: "Test note content",
                                                            ownerId: "")))
     }
 }

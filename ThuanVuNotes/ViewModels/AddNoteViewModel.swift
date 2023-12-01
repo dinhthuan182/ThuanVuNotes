@@ -48,7 +48,6 @@ class AddNoteViewModel: ObservableObject {
         let title = content.getFirstLine() ?? content
         if var updateNote = self.note {
             // Update note
-            updateNote.title = title
             updateNote.content = content
 
             noteRepository.updateNote(updateNote)
@@ -63,9 +62,8 @@ class AddNoteViewModel: ObservableObject {
                 .store(in: &cancellables)
         } else {
             // Add new note
-            let newNote = Note(title: title,
-                            content: content,
-                            ownerId: userID)
+            let newNote = Note(content: content,
+                               ownerId: userID)
 
             noteRepository.addNote(newNote)
                 .sink { [weak self] completion in
