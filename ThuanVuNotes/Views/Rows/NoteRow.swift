@@ -16,13 +16,15 @@ struct NoteRow: View {
         VStack(alignment: .leading) {
             Text(viewModel.title)
 
-            if let username = viewModel.username {
-                Text("By: " + username)
+            if !viewModel.isMySelf {
+                Text("By: \(viewModel.username ?? "")")
                     .foregroundStyle(.gray)
                     .font(.footnote)
                     .italic()
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(Rectangle())
     }
 }
 

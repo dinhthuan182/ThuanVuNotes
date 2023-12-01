@@ -17,12 +17,14 @@ class NoteRowViewModel: ObservableObject, Identifiable {
     @Published var note: Note
     @Published var title = ""
     @Published var username: String?
+    @Published var isMySelf: Bool
     var id = ""
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
     init(note: Note, isMySelf: Bool) {
         self.note = note
+        self.isMySelf = isMySelf
 
         $note
             .map { $0.id }
@@ -33,15 +35,16 @@ class NoteRowViewModel: ObservableObject, Identifiable {
             .assign(to: \.title, on: self)
             .store(in: &cancellables)
 
-        if !isMySelf {
-            $note
-                .flatMap { self.userRepository.getUser($0.ownerId) }
-                .sink { completion in
-                } receiveValue: { [weak self] user in
-                    self?.username = user?.username
-                }
-                .store(in: &cancellables)
-        }
+        $note
+            .filter { _ in !self.isMySelf }
+            .flatMap { [weak self] note in
+                self?.userRepository.getUser(note.ownerId) ?? Empty().eraseToAnyPublisher()
+            }
+            .sink { completion in
+            } receiveValue: { [weak self] user in
+                self?.username = user?.username
+            }
+            .store(in: &cancellables)
     }
 }
 

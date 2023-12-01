@@ -27,6 +27,9 @@ class NoteRepository: ObservableObject {
             .map { notes in
                 notes.filter { $0.deletedAt == nil }
             }
+            .map { [weak self] notes in
+                self?.sortedByUpdated(notes) ?? []
+            }
             .assign(to: \.availableNotes, on: self)
             .store(in: &cancellables)
 
@@ -35,6 +38,9 @@ class NoteRepository: ObservableObject {
         $allNotes
             .map { notes in
                 notes.filter { $0.deletedAt != nil && $0.ownerId == userId }
+            }
+            .map { [weak self] notes in
+                self?.sortedByUpdated(notes) ?? []
             }
             .assign(to: \.mineDeletedNotes, on: self)
             .store(in: &cancellables)
@@ -101,5 +107,18 @@ class NoteRepository: ObservableObject {
                 self?.reference.child(note.id).setValue(dictionary)
             }
             .eraseToAnyPublisher()
+    }
+
+
+    // Sort note by update
+    private func sortedByUpdated(_ notes: [Note]) -> [Note] {
+        notes.sorted {
+            guard let first = $0.updatedAt,
+                  let second = $1.updatedAt else {
+                return false
+            }
+
+            return first > second
+        }
     }
 }

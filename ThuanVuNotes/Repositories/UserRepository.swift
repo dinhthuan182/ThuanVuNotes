@@ -31,7 +31,6 @@ class UserRepository: ObservableObject {
                 guard let value = snapshot.value,
                         !(value is NSNull) else {
                     self?.currentUser = User(id: userId)
-
                     return
                 }
 
@@ -47,7 +46,6 @@ class UserRepository: ObservableObject {
         return Future<User?, Error> { [weak self] promise in
             guard let self = self else {
                 promise(.success(nil))
-
                 return
             }
 
