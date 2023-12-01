@@ -21,6 +21,7 @@ struct AddNoteView: View {
                             .focused($editingNote)
 
             Button {
+                editingNote = false
                 viewModel.addNote()
             } label: {
                 Image(systemName: viewModel.isEditMode ? "checkmark.circle" : "plus.circle")
@@ -33,10 +34,14 @@ struct AddNoteView: View {
         .navigationTitle(viewModel.isEditMode ? "Update note" : "New note")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            editingNote.toggle()
+            editingNote = true
         }
         .onReceive(viewModel.$destroyView) { destroy in
             destroy ? dismiss() : nil
+        }
+        .alert(isPresented: $viewModel.isError) {
+            Alert(title: Text("Error"),
+                  message: Text(viewModel.error?.localizedDescription ?? ""))
         }
     }
 }

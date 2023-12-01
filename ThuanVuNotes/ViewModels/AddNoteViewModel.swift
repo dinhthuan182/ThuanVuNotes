@@ -22,6 +22,10 @@ class AddNoteViewModel: ObservableObject {
     var isEditMode: Bool {
         note != nil
     }
+    var isError: Bool {
+        get { error?.localizedDescription != nil }
+        set { error = nil }
+    }
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
