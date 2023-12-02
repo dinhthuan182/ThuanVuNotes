@@ -36,7 +36,7 @@ struct NoteListView: View {
             }
             .buttonStyle(.plain)
         }
-        .listStyle(.inset)
+        .listStyle(.insetGrouped)
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: 20) {
                 Button {

@@ -22,7 +22,7 @@ struct TrashView: View {
                     .tint(.blue)
                 }
         }
-        .listStyle(.inset)
+        .listStyle(.insetGrouped)
         .navigationTitle("Trash")
     }
 }
