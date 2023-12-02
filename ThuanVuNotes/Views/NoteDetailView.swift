@@ -15,7 +15,7 @@ struct NoteDetailView: View {
     var body: some View {
         VStack(alignment: .leading) {
             UserView(viewModel: viewModel.userViewModel)
-                .frame(height: 50)
+                .frame(height: 35)
                 .padding(.leading)
 
             Divider()

@@ -36,7 +36,7 @@ class NoteListViewModel: ObservableObject {
     @Published var selectedNoteRowViewModel: NoteRowViewModel?
     // Properties
     @Published var currentUserId: String = ""
-    @Published var username: String = ""
+    @Published var currentUsername: String = ""
     @Published var ownerOptions = NoteOwnerOption.allCases
     @Published var selectedOwnerOption: NoteOwnerOption = .mySelf
     private var cancellables = Set<AnyCancellable>()
@@ -50,7 +50,7 @@ class NoteListViewModel: ObservableObject {
             .store(in: &cancellables)
         userRepository.$currentUser
             .compactMap { $0?.username }
-            .assign(to: \.username, on: self)
+            .assign(to: \.currentUsername, on: self)
             .store(in: &cancellables)
         userRepository.$currentUser
             .compactMap { $0?.id }
@@ -75,14 +75,14 @@ class NoteListViewModel: ObservableObject {
     }
 
     func changeUserName() {
-        userRepository.updateUsername(username)
+        userRepository.updateUsername(currentUsername)
             .sink { completion in
             } receiveValue: { _ in }
             .store(in: &cancellables)
     }
 
     func revertUsername() {
-        username = userRepository.currentUser?.username ?? ""
+        currentUsername = userRepository.currentUser?.username ?? ""
     }
 
     func deleteRow(_ rowViewModel: NoteRowViewModel) {

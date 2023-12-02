@@ -98,7 +98,7 @@ struct NoteListView: View {
             }
         }
         .alert("Tell other people your name", isPresented: $changeUsername) {
-            TextField("Enter your name here", text: $viewModel.username)
+            TextField("Enter your name here", text: $viewModel.currentUsername)
                 .onSubmit(changeUserName)
 
             Button("Change", action: changeUserName)

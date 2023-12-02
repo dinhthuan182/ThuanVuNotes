@@ -74,10 +74,7 @@ class NoteRepository: ObservableObject {
     }
 
     func updateNote(_ note: Note) -> AnyPublisher<Any, Error> {
-        var updateNote = note
-        updateNote.updatedAt = .now
-
-        return Just(updateNote)
+        return Just(note)
             .tryMap { try JSONParser().encode($0) }
             .compactMap { [weak self] dictionary in
                 self?.reference.child(note.id).setValue(dictionary)

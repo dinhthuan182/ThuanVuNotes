@@ -45,10 +45,15 @@ class AddNoteViewModel: ObservableObject {
             return
         }
 
-        // Get the first line of content to make the note's title
         if var updateNote = self.note {
+            // Make sure the users change their notes
+            guard updateNote.ownerId == userID else {
+                return
+            }
+
             // Update note
             updateNote.content = content
+            updateNote.updatedAt = .now
 
             noteRepository.updateNote(updateNote)
                 .sink { [weak self] completion in
@@ -60,6 +65,7 @@ class AddNoteViewModel: ObservableObject {
                     }
                 } receiveValue: { _ in }
                 .store(in: &cancellables)
+
         } else {
             // Add new note
             let newNote = Note(content: content,
