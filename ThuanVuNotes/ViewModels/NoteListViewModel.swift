@@ -39,6 +39,7 @@ class NoteListViewModel: ObservableObject {
     @Published var currentUsername: String = ""
     @Published var ownerOptions = NoteOwnerOption.allCases
     @Published var selectedOwnerOption: NoteOwnerOption = .mySelf
+    @Published var searchNote: String = ""
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
@@ -57,17 +58,33 @@ class NoteListViewModel: ObservableObject {
             .assign(to: \.currentUserId, on: self)
             .store(in: &cancellables)
 
+        /// Reset search note when change `selectedOwnerOption`
+        $selectedOwnerOption.sink { [weak self] _ in
+            self?.searchNote = ""
+        }
+        .store(in: &cancellables)
+
         // Fetch notes with owner option
-        Publishers.CombineLatest3(noteRepository.$availableNotes, $selectedOwnerOption, $currentUserId)
-            .map { (notes, ownerOption, currentUserId) in
+        Publishers.CombineLatest4(noteRepository.$availableNotes, $selectedOwnerOption, $searchNote, $currentUserId)
+            .map { (notes, ownerOption, searchText, currentUserId) in
+                var searchedNotes = notes
+                /// Filter with `searchText`
+                if !searchText.isEmpty {
+                    searchedNotes = notes.filter { $0.content.containsWithLowercased(searchText) }
+                }
+
+                /// Filter with `ownerOption`
+                /// And then maping to `NoteRowViewModel`(return type)
                 switch ownerOption {
                     case .mySelf:
-                        let mapingNotes = notes.filter { $0.ownerId == currentUserId }
-                        return mapingNotes.map { NoteRowViewModel(note: $0, viewMode: .mySelf) }
+                        let mapingNotes = searchedNotes.filter { $0.ownerId == currentUserId }
+                        return mapingNotes
+                                .map { NoteRowViewModel(note: $0, viewMode: .mySelf) }
 
                     case .otherUsers:
-                        let mapingNotes = notes.filter { $0.ownerId != currentUserId && $0.shared }
-                        return mapingNotes.map { NoteRowViewModel(note: $0, viewMode: .otherUser) }
+                        let mapingNotes = searchedNotes.filter { $0.ownerId != currentUserId && $0.shared }
+                        return mapingNotes
+                                .map { NoteRowViewModel(note: $0, viewMode: .otherUser) }
                 }
             }
             .assign(to: \.noteRowViewModels, on: self)

@@ -39,6 +39,7 @@ struct NoteListView: View {
             .buttonStyle(.plain)
         }
         .listStyle(.insetGrouped)
+        .searchable(text: $viewModel.searchNote)
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: 20) {
                 Button {

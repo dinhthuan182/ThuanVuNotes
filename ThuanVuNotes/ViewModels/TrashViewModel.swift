@@ -16,13 +16,22 @@ class TrashViewModel: ObservableObject {
 
     // MARK: Properties
     @Published var noteRowViewModels = [NoteRowViewModel]()
+    @Published var searchNote: String = ""
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Initialization
     init() {
         noteRepository.$mineDeletedNotes
-            .map { notes in
-                notes.map { NoteRowViewModel(note: $0, viewMode: .trash) }
+            .combineLatest($searchNote)
+            .map { notes, searchText in
+                var searchedNotes = notes
+                /// Filter with `searchText`
+                if !searchText.isEmpty {
+                    searchedNotes = notes.filter { $0.content.containsWithLowercased(searchText) }
+                }
+
+                return searchedNotes
+                        .map { NoteRowViewModel(note: $0, viewMode: .trash) }
             }
             .assign(to: \.noteRowViewModels, on: self)
             .store(in: &cancellables)

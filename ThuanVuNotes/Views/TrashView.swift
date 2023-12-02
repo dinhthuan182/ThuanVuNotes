@@ -23,6 +23,7 @@ struct TrashView: View {
                 }
         }
         .listStyle(.insetGrouped)
+        .searchable(text: $viewModel.searchNote)
         .navigationTitle("Trash")
     }
 }
