@@ -15,6 +15,7 @@ struct NoteRow: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(viewModel.title)
+                .lineLimit(1)
 
             if !viewModel.isMySelf {
                 Text("By: \(viewModel.username ?? "")")
