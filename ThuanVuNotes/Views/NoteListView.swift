@@ -26,13 +26,15 @@ struct NoteListView: View {
             Button {
                 viewModel.selectedNoteRowViewModel = rowViewModel
             } label: {
-                NoteRow(viewModel: rowViewModel)
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button("Delete", role: .destructive) {
-                            viewModel.deleteRow(rowViewModel)
-                        }
+                NoteRow(viewModel: rowViewModel,
+                        onTapShare: changeShareState(of: ))
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button("Delete", role: .destructive) {
+                        viewModel.deleteRow(rowViewModel)
                     }
-                    .disabled(viewModel.selectedOwnerOption != .mySelf)
+                }
+                // Only disable swipeActions
+                .disabled(viewModel.selectedOwnerOption != .mySelf)
             }
             .buttonStyle(.plain)
         }
@@ -112,6 +114,10 @@ struct NoteListView: View {
     private func changeUserName() {
         viewModel.changeUserName()
         changeUsername.toggle()
+    }
+
+    private func changeShareState(of rowViewModel: NoteRowViewModel) {
+        viewModel.changeShareState(rowViewModel)
     }
 }
 

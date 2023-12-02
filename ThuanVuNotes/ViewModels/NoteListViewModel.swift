@@ -63,11 +63,11 @@ class NoteListViewModel: ObservableObject {
                 switch ownerOption {
                     case .mySelf:
                         let mapingNotes = notes.filter { $0.ownerId == currentUserId }
-                        return mapingNotes.map { NoteRowViewModel(note: $0, isMySelf: true) }
+                        return mapingNotes.map { NoteRowViewModel(note: $0, viewMode: .mySelf) }
 
                     case .otherUsers:
-                        let mapingNotes = notes.filter { $0.ownerId != currentUserId }
-                        return mapingNotes.map { NoteRowViewModel(note: $0, isMySelf: false) }
+                        let mapingNotes = notes.filter { $0.ownerId != currentUserId && $0.shared }
+                        return mapingNotes.map { NoteRowViewModel(note: $0, viewMode: .otherUser) }
                 }
             }
             .assign(to: \.noteRowViewModels, on: self)
@@ -86,7 +86,28 @@ class NoteListViewModel: ObservableObject {
     }
 
     func deleteRow(_ rowViewModel: NoteRowViewModel) {
+        // Make sure the users change their notes
+        guard selectedOwnerOption == .mySelf,
+              rowViewModel.note.ownerId == currentUserId else {
+            return
+        }
+
         noteRepository.deleteNote(rowViewModel.note)
+            .sink { completion in
+            } receiveValue: { _ in }
+            .store(in: &cancellables)
+    }
+
+    func changeShareState(_ rowViewModel: NoteRowViewModel) {
+        var note = rowViewModel.note
+        // Make sure the users change their notes
+        guard selectedOwnerOption == .mySelf,
+              note.ownerId == currentUserId else {
+            return
+        }
+
+        note.shared.toggle()
+        noteRepository.updateNote(note)
             .sink { completion in
             } receiveValue: { _ in }
             .store(in: &cancellables)

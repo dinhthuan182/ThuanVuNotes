@@ -22,7 +22,7 @@ class TrashViewModel: ObservableObject {
     init() {
         noteRepository.$mineDeletedNotes
             .map { notes in
-                notes.map { NoteRowViewModel(note: $0, isMySelf: true) }
+                notes.map { NoteRowViewModel(note: $0, viewMode: .trash) }
             }
             .assign(to: \.noteRowViewModels, on: self)
             .store(in: &cancellables)

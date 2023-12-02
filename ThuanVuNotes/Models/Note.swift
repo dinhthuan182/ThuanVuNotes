@@ -12,6 +12,7 @@ struct Note: Codable, Identifiable {
     var id: String = UUID().uuidString
     var content: String
     var ownerId: String
+    var shared: Bool = false
     var createdAt: Date? = .now
     var updatedAt: Date? = .now
     var deletedAt: Date?

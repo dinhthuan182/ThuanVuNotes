@@ -11,17 +11,33 @@ import SwiftUI
 struct NoteRow: View {
     // MARK: Properties
     @ObservedObject var viewModel: NoteRowViewModel
+    var onTapShare: ((NoteRowViewModel) -> Void)?
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(viewModel.title)
-                .lineLimit(1)
+        HStack {
+            VStack(alignment: .leading) {
+                Text(viewModel.title)
+                    .lineLimit(1)
 
-            if !viewModel.isMySelf {
-                Text("By: \(viewModel.username ?? "")")
-                    .foregroundStyle(.gray)
-                    .font(.footnote)
-                    .italic()
+                if viewModel.viewMode == .otherUser {
+                    Text("By: \(viewModel.username ?? "")")
+                        .foregroundStyle(.gray)
+                        .font(.footnote)
+                        .italic()
+                }
+            }
+
+            Spacer()
+
+            if viewModel.viewMode == .mySelf {
+                Image(systemName: viewModel.shared ? "person.2.fill" : "person.2.slash")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 25)
+                    .foregroundStyle(viewModel.shared ? .blue : .gray)
+                    .onTapGesture {
+                        onTapShare?(viewModel)
+                    }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
