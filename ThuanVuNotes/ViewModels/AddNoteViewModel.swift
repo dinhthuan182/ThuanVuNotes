@@ -40,12 +40,12 @@ class AddNoteViewModel: ObservableObject {
 
     // MARK: Functions
     func addNote() {
-        guard let userID = userRepository.currentUser?.id else {
+        guard let userID = userRepository.currentUser?.id,
+              !content.isEmpty else {
             return
         }
 
         // Get the first line of content to make the note's title
-        let title = content.getFirstLine() ?? content
         if var updateNote = self.note {
             // Update note
             updateNote.content = content
