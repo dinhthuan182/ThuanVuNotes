@@ -19,9 +19,9 @@ About the share notes feature, I allow users to use the application without requ
 About the user interface design, I want to build a simple user interface like the default notes application on iOS devices.
 ### Main screen
 <div>
-  <image src="/Documents/Screenshots/My_note_list.png" alt="My note list" width="300" />
-  <image src="/Documents/Screenshots/Other_users_note_list.png" alt="Other users' note list" width="300" />
-  <image src="/Documents/Screenshots/Search_note.png" alt="Search note list" width="300" />
+  <image src="/Documents/Screenshots/My_note_list.png" alt="My note list" width="250" />
+  <image src="/Documents/Screenshots/Other_users_note_list.png" alt="Other users' note list" width="250" />
+  <image src="/Documents/Screenshots/Search_note.png" alt="Search note list" width="250" />
 </div>
 <br />
 The main view is the note list screen.<br />
@@ -38,9 +38,9 @@ On the "other users" mode:
 - When the user taps on the note item, the detail note screen will appear so that the user can see all other user note's content.<br />
 
 <div>
-  <image src="/Documents/Screenshots/Update_a_note.png" alt="Update a note" width="300" />
-  <image src="/Documents/Screenshots/Delete_note.png" alt="Update a note" width="300" />
-  <image src="/Documents/Screenshots/Note_detail.png" alt="Note detail" width="300" />
+  <image src="/Documents/Screenshots/Update_a_note.png" alt="Update a note" width="250" />
+  <image src="/Documents/Screenshots/Delete_note.png" alt="Update a note" width="250" />
+  <image src="/Documents/Screenshots/Note_detail.png" alt="Note detail" width="250" />
 </div>
 
 ### Set the username
@@ -48,12 +48,12 @@ On the "other users" mode:
 To set the username, the user can tap the person icon at the top right corner of the screen. If the user has set the username, it will appear next to the person icon.
 The popup of the set username will appear, the user can edit the username here.
 
-<image src="/Documents/Screenshots/Change_username.png" alt="Note detail" width="300" />
+<image src="/Documents/Screenshots/Change_username.png" alt="Note detail" width="250" />
 
 ### Create/update note
 <div>
-  <image src="/Documents/Screenshots/Create_a_note.png" alt="Create a note" width="300" />
-  <image src="/Documents/Screenshots/Update_a_note.png" alt="Update a note" width="300" />
+  <image src="/Documents/Screenshots/Create_a_note.png" alt="Create a note" width="250" />
+  <image src="/Documents/Screenshots/Update_a_note.png" alt="Update a note" width="250" />
 </div>
 <br />
 To create a new note, the user can tap on the create button (the button with the square and pencil icon) at the bottom right corner, and then the create note screen will appear.<br />
@@ -63,8 +63,8 @@ On this screen, there are a big text editor so the user can enter the note's con
 ### Trash
 
 <div>
-  <image src="/Documents/Screenshots/Trash.png" alt="Trash" width="300" />
-  <image src="/Documents/Screenshots/Recover_note.png" alt="Recover a note" width="300" />
+  <image src="/Documents/Screenshots/Trash.png" alt="Trash" width="250" />
+  <image src="/Documents/Screenshots/Recover_note.png" alt="Recover a note" width="250" />
 </div>
 <br />
 If the user wants to see the deleted notes, the user can tap the trash button at the left bottom corner of the note list screen. when the deleted note list appears, the user can swipe from right to left to a note item to recover the note.
